@@ -1,0 +1,22 @@
+#logging:
+#  level:
+#    root: ${TUNESCOUT_LOG_LEVEL}
+spring:
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: llama3.2
+          temperature: 0.7
+          format: json
+  application:
+    name: tunescout
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tunescout
+    username: postgres
+    password: changemeinprod!
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
