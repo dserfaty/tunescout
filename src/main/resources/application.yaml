@@ -1,6 +1,6 @@
-#logging:
-#  level:
-#    root: ${TUNESCOUT_LOG_LEVEL}
+logging:
+  level:
+    root: ${TUNESCOUT_LOG_LEVEL}
 spring:
   ai:
     ollama:
