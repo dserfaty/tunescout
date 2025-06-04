@@ -1,6 +1,6 @@
-logging:
-  level:
-    root: ${TUNESCOUT_LOG_LEVEL}
+#logging:
+#  level:
+#    root: ${TUNESCOUT_LOG_LEVEL}
 spring:
   ai:
     ollama:
@@ -20,3 +20,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+# Application specific configuration
+tunescout:
+  cache:
+    ttl-minutes: 60
