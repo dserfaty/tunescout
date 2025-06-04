@@ -19,6 +19,9 @@ public class InMemoryRecommendationStorageServiceImpl implements RecommendationS
     // Map to store recommendation status by request ID
     private final Map<String, String> statusMap = new ConcurrentHashMap<>();
 
+    // Map to store query to request ID mapping (for caching)
+    private final Map<String, String> queryToRequestIdMap = new ConcurrentHashMap<>();
+
     // Status constants
     public static final String STATUS_PROCESSING = "PROCESSING";
     public static final String STATUS_COMPLETED = "COMPLETED";
@@ -45,8 +48,26 @@ public class InMemoryRecommendationStorageServiceImpl implements RecommendationS
 
     @Override
     public String createPendingRecommendation(String query) {
+        // Normalize the query (trim and lowercase)
+        String normalizedQuery = query.trim().toLowerCase();
+
+        // Check if this query has already been processed
+        String existingRequestId = queryToRequestIdMap.get(normalizedQuery);
+        if (existingRequestId != null) {
+            // If the request exists and is completed, return the existing ID
+            String status = statusMap.get(existingRequestId);
+            if (STATUS_COMPLETED.equals(status)) {
+                return existingRequestId;
+            }
+        }
+
+        // Create a new request ID
         String requestId = UUID.randomUUID().toString();
         statusMap.put(requestId, STATUS_PROCESSING);
+
+        // Store the normalized query to request ID mapping
+        queryToRequestIdMap.put(normalizedQuery, requestId);
+
         return requestId;
     }
 

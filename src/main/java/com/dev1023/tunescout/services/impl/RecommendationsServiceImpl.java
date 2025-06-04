@@ -43,14 +43,22 @@ public class RecommendationsServiceImpl implements RecommendationsService {
         log.debug("Initiating asynchronous recommendation for query: {}", query);
         String requestId = recommendationStorageService.createPendingRecommendation(query);
 
-        // Start the recommendation process asynchronously
-        log.debug("Starting recommendation process asynchronously for query: {}", query);
-        CompletableFuture.runAsync(() -> processRecommendationAsync(requestId, query));
-        log.debug("Recommendation process started in background");
+        // Get the current status of the request
+        String status = recommendationStorageService.getRecommendationStatus(requestId);
+
+        // Only start the recommendation process if the status is PROCESSING
+        if (InMemoryRecommendationStorageServiceImpl.STATUS_PROCESSING.equals(status)) {
+            // Start the recommendation process asynchronously
+            log.debug("Starting recommendation process asynchronously for query: {}", query);
+            CompletableFuture.runAsync(() -> processRecommendationAsync(requestId, query));
+            log.debug("Recommendation process started in background");
+        } else {
+            log.debug("Recommendation already exists for query: {}, status: {}", query, status);
+        }
 
         return RecommendationRequestIdDto.builder()
                 .requestId(requestId)
-                .status(InMemoryRecommendationStorageServiceImpl.STATUS_PROCESSING)
+                .status(status)
                 .build();
     }
 
