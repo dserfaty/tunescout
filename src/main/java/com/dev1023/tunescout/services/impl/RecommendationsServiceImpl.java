@@ -10,7 +10,6 @@ import com.dev1023.tunescout.services.RecommendationsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -44,10 +43,10 @@ public class RecommendationsServiceImpl implements RecommendationsService {
         log.debug("Initiating asynchronous recommendation for query: {}", query);
         String requestId = recommendationStorageService.createPendingRecommendation(query);
 
-        // Process the recommendation asynchronously
-        log.warn("Process recommendation asynchronously for query: {}", query);
-        processRecommendationAsync(requestId, query);
-        log.warn("done");
+        // Start the recommendation process asynchronously
+        log.debug("Starting recommendation process asynchronously for query: {}", query);
+        CompletableFuture.runAsync(() -> processRecommendationAsync(requestId, query));
+        log.debug("Recommendation process started in background");
 
         return RecommendationRequestIdDto.builder()
                 .requestId(requestId)
@@ -55,7 +54,6 @@ public class RecommendationsServiceImpl implements RecommendationsService {
                 .build();
     }
 
-    @Async
     protected void processRecommendationAsync(String requestId, String query) {
         log.debug("Processing asynchronous recommendation for requestId: {}", requestId);
         try {
