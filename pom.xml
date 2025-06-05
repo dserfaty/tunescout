@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.dev1023</groupId>
 	<artifactId>tunescout</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>tunescout</name>
 	<description>Spring Boot Music Recommendation Application</description>
 	<url/>
