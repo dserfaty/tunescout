@@ -1,0 +1,28 @@
+# Test-specific configuration
+spring:
+  # Database configuration
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  # Redis configuration
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  main:
+    allow-bean-definition-overriding: true
+
+# Application specific configuration
+tunescout:
+  cache:
+    ttl-minutes: 1  # Short TTL for tests
