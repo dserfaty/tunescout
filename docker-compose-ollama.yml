@@ -1,0 +1,61 @@
+# WARNING: THIS IS JUST PROVIDED AS A STARTING POINT, IT DOES NOT WORK
+#          AT THE MOMENT AND NEEDS TO BE FURTHER EXPERIMENTED WITH
+# ==================================================================================
+# This config will spawn an ollama container and will fetch the llama3.2 model
+# However it will take a very long time to fetch it as the model is 2+ Gb
+# Subsequent starts of the container will use the already downloaded model
+# It also requires a lot of memory or the process will fail and is currently very slow.
+# I have not yet been able to make it respond in time so it needs more tweaking of
+# the configuration, possibly using GPUs?
+# I welcome any suggestions.
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - postgres.env
+    restart: always
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama/ollama:/root/.ollama
+      - ./entrypoint.sh:/entrypoint.sh
+    pull_policy: always
+    tty: true
+    restart: always
+    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 16G
+        reservations:
+          cpus: '0.25'
+          memory: 16G
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+      - ollama
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tunescout
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=changemeinprod!
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_AI_OLLAMA_BASE_URL=http://ollama:11434
+    restart: always

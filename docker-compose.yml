@@ -1,3 +1,6 @@
+# This docker compose file assumes the ollama server is running on the host machine
+# with the model llama3.2 already available
+# For a version running with ollama in a container, see: docker-compose-ollama.yml
 services:
   db:
     image: postgres
@@ -13,26 +16,6 @@ services:
       - "6379:6379"
     restart: always
 
-#  ollama:
-#    image: ollama/ollama:latest
-#    ports:
-#      - "11434:11434"
-#    volumes:
-#      - ./ollama/ollama:/root/.ollama
-#      - ./entrypoint.sh:/entrypoint.sh
-#    pull_policy: always
-#    tty: true
-#    restart: always
-#    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.50'
-#          memory: 10G
-#        reservations:
-#          cpus: '0.25'
-#          memory: 10G
-
   app:
     build: .
     ports:
@@ -40,13 +23,11 @@ services:
     depends_on:
       - db
       - redis
-#      - ollama
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tunescout
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=changemeinprod!
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
-#      - SPRING_AI_OLLAMA_BASE_URL=http://ollama:11434
       - SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434
     restart: always

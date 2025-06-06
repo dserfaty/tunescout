@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Script for the docker container to start ollama and pull the model
+# This is only used by the docker-compose-ollama.yml file
+# =====
+
 # Start Ollama in the background.
 /bin/ollama serve &
 # Record Process ID.
