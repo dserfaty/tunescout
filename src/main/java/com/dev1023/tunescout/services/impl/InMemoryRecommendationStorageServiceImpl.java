@@ -56,7 +56,7 @@ public class InMemoryRecommendationStorageServiceImpl implements RecommendationS
         if (existingRequestId != null) {
             // If the request exists and is completed, return the existing ID
             String status = statusMap.get(existingRequestId);
-            if (STATUS_COMPLETED.equals(status)) {
+            if (STATUS_COMPLETED.equals(status) || STATUS_PROCESSING.equals(status)) {
                 return existingRequestId;
             }
         }
