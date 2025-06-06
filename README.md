@@ -103,7 +103,7 @@ which should start the necessary containers.
 If you wish to try and fix my initial attemps at running ollama in a container, I provided a starter script with the **_docker-compose-ollama.yml_** file. 
 
 
-## Future Works
+## Future Work
 - Integrate Swagger-UI, see: https://medium.com/@ruwanpradeep9911/implementing-swagger-with-spring-boot-a-step-by-step-guide-4b121e607bd1
 - Make Ollama run in a docker container
 - add rate limits and prevent too many requests
