@@ -8,14 +8,15 @@
 # I have not yet been able to make it respond in time so it needs more tweaking of
 # the configuration, possibly using GPUs?
 # I welcome any suggestions.
+# The postgres db info is here but commented for use in the future.
 services:
-  db:
-    image: postgres
-    ports:
-      - "5432:5432"
-    env_file:
-      - postgres.env
-    restart: always
+#  db:
+#    image: postgres
+#    ports:
+#      - "5432:5432"
+#    env_file:
+#      - postgres.env
+#    restart: always
 
   redis:
     image: redis:latest
@@ -48,13 +49,13 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+#      - db
       - redis
       - ollama
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tunescout
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=changemeinprod!
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tunescout
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=changemeinprod!
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - SPRING_AI_OLLAMA_BASE_URL=http://ollama:11434

@@ -15,14 +15,14 @@ spring:
           format: json
   application:
     name: tunescout
-  datasource:
-    url: jdbc:postgresql://localhost:5432/tunescout
-    username: postgres
-    password: changemeinprod!
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/tunescout
+#    username: postgres
+#    password: changemeinprod!
+#    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
   data:
     redis:
       host: localhost

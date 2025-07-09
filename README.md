@@ -12,8 +12,7 @@ The app is a simple api written in Spring Boot with 4 api calls:
 
 The goal was to experiment with integrating Ollama and SpringBoot.
 
-It currently also spans a postgres database that I 
-do not make use of yet and caches the results for 
+The app caches the results for 
 one hour in redis, so the same query will return the
 same results for one hour.
 
